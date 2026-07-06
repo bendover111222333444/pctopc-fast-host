@@ -67,3 +67,9 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# Visual Studio Virtual Cache and Tracking Files
+.vs/
+*.vsidx
+*.suo
+*.user

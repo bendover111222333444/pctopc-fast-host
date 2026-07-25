@@ -14,6 +14,8 @@ void CaptureEngine::Init(HWND hWindow, UINT monitorDefault,const std::wstring& a
 	m_appName = appName;
 	m_winrtSize = { 0, 0 };
 
+	SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+
 	HMONITOR monitor = MonitorFromWindow(m_hWindow, monitorDefault);																	// creates monitor object
 
 	auto activationFactory = winrt::get_activation_factory<winrt_capture::GraphicsCaptureItem, IGraphicsCaptureItemInterop>();		// bridges the gap between old win32 to winrt for the monitor object

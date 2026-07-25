@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37411.7 d17.14
+VisualStudioVersion = 17.14.37411.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pctopc-host-cpp", "pctopc-host-cpp\pctopc-host-cpp.vcxproj", "{29BEBFD6-7124-4AA2-9FA0-DD90D887D89D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pctopc-fast-host", "pctopc-host-cpp\pctopc-host-cpp.vcxproj", "{29BEBFD6-7124-4AA2-9FA0-DD90D887D89D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +13,8 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{29BEBFD6-7124-4AA2-9FA0-DD90D887D89D}.Debug|x64.ActiveCfg = Debug|x64
-		{29BEBFD6-7124-4AA2-9FA0-DD90D887D89D}.Debug|x64.Build.0 = Debug|x64
+		{29BEBFD6-7124-4AA2-9FA0-DD90D887D89D}.Debug|x64.ActiveCfg = Release|x64
+		{29BEBFD6-7124-4AA2-9FA0-DD90D887D89D}.Debug|x64.Build.0 = Release|x64
 		{29BEBFD6-7124-4AA2-9FA0-DD90D887D89D}.Debug|x86.ActiveCfg = Debug|Win32
 		{29BEBFD6-7124-4AA2-9FA0-DD90D887D89D}.Debug|x86.Build.0 = Debug|Win32
 		{29BEBFD6-7124-4AA2-9FA0-DD90D887D89D}.Release|x64.ActiveCfg = Release|x64

@@ -18,8 +18,8 @@ private:
 	UINT m_monitorDefault = MONITOR_DEFAULTTOPRIMARY;
 	int m_iconId = IDI_ICON1;
 	Resolution m_startingSize = {
-		.width = 3840,
-		.height = 2160,
+		.width = 400,
+		.height = 600,
 	};
 
 	std::unique_ptr<UIManager> m_uiManager = nullptr;

@@ -9,7 +9,6 @@ private:
 	std::wstring m_appName = L"";
 	HMODULE m_hInstance = nullptr;
 	HWND m_hWindow = nullptr;
-	std::vector<IWindowEventListener*> m_listeners{};
 
 	static void HandleCreationMessage(HWND hwnd, LPARAM lParam);
 	bool HandleMessage(HWND hwnd, UINT uMsg, LPARAM lParam);
@@ -27,8 +26,7 @@ public:
 	void Init(const std::wstring& appName, Resolution startRes, int iconId);
 	void Destroy();
 	void Show();
-	void RegisterListener(IWindowEventListener* listener);
-	void MessageLoopRun(std::function<void(const MSG& msg)> method);
+	void FreezeRunMainThread(std::function<void(const MSG& msg)> method);
 
 	HMODULE GetHandle() const { return m_hInstance; }
 	HWND GetWindowHandle() const { return m_hWindow; }

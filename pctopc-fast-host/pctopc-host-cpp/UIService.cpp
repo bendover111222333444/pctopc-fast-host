@@ -1,9 +1,9 @@
-#include "UIManager.h"
+#include "UIService.h"
 #include "imgui.h" 
 #include "imgui_impl_win32.h" 
 #include "imgui_impl_dx11.h"
 
-void UIManager::RenderUI()
+void UIService::RenderUI()
 {
 	ImGuiIO& io = ImGui::GetIO();
 	io.FontGlobalScale = 1.5f;
@@ -26,7 +26,7 @@ void UIManager::RenderUI()
 	io.FontGlobalScale = 1.0f;
 }
 
-void UIManager::ResizeUI(Resolution res)
+void UIService::ResizeUI(Resolution res)
 {
 
 	if (ImGui::GetCurrentContext() != nullptr)
@@ -41,7 +41,7 @@ void UIManager::ResizeUI(Resolution res)
 
 }
 
-void UIManager::InitUI(HWND hWindow, ID3D11Device* device, ID3D11DeviceContext* deviceContext) {
+void UIService::InitUI(HWND hWindow, ID3D11Device* device, ID3D11DeviceContext* deviceContext) {
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -53,7 +53,7 @@ void UIManager::InitUI(HWND hWindow, ID3D11Device* device, ID3D11DeviceContext* 
 
 }
 
-void UIManager::ShutDownUI() {
+void UIService::ShutDownUI() {
 
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
@@ -61,7 +61,7 @@ void UIManager::ShutDownUI() {
 
 }
 
-void UIManager::InitFrameUI() {
+void UIService::InitFrameUI() {
 
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
@@ -69,7 +69,7 @@ void UIManager::InitFrameUI() {
 
 }
 
-void UIManager::CloseFrameUI(ID3D11RenderTargetView* renderTargetView, ID3D11DeviceContext* deviceContext, IDXGISwapChain* swapChain) {
+void UIService::CloseFrameUI(ID3D11RenderTargetView* renderTargetView, ID3D11DeviceContext* deviceContext) {
 
 	ImGui::Render();
 
@@ -77,12 +77,5 @@ void UIManager::CloseFrameUI(ID3D11RenderTargetView* renderTargetView, ID3D11Dev
 	deviceContext->OMSetRenderTargets(1, targets, nullptr);
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-	swapChain->Present(0, DXGI_PRESENT_DO_NOT_WAIT);
-
-}
-
-void UIManager::OnResize(Resolution res) { 
-
-	ResizeUI(res); 
 
 }

@@ -1,4 +1,5 @@
-#include "CaptureEngine.h" 
+#include "CaptureEngine.h"
+
 #include <winrt/Windows.Foundation.h>
 #include <windows.graphics.capture.interop.h> 
 #include <windows.graphics.directx.direct3d11.interop.h> 
@@ -41,7 +42,7 @@ void CaptureEngine::Init(HWND hWindow, UINT monitorDefault,const std::wstring& a
 
 }
 
-void CaptureEngine::Start(ID3D11DeviceContext* context, ID3D11Texture2D* backBuffer, IDXGISwapChain* swapChain, winrt_d3d11::IDirect3DDevice winrtDevice, UINT bufferCount)
+void CaptureEngine::Start(EncoderEngine* encoderEngine, ID3D11DeviceContext* context, ID3D11Texture2D* backBuffer, winrt_d3d11::IDirect3DDevice winrtDevice, UINT bufferCount)
 {
 	m_framePool = winrt_capture::Direct3D11CaptureFramePool::CreateFreeThreaded(													// new capture thread
 		winrtDevice,																												// graphics device
@@ -50,43 +51,15 @@ void CaptureEngine::Start(ID3D11DeviceContext* context, ID3D11Texture2D* backBuf
 		m_winrtSize																													// width height settings
 	);
 
-	m_framePool.FrameArrived([context, backBuffer, swapChain, this](auto const& sender, auto const& args) {
+	m_framePool.FrameArrived([encoderEngine, context, backBuffer, this](auto const& sender, auto const& args) {
 
-		std::lock_guard<std::mutex> lock(m_pipelineMutex);																					// fixes the parrelle thread issues
+		std::lock_guard<std::mutex> lock(m_pipelineMutex);																			// fixes the parrelle thread issues
 		if (m_isStopping) return;
 
-		winrt_capture::Direct3D11CaptureFrame frame = sender.TryGetNextFrame();														// fetch frame
-		if (frame != nullptr) {																										// prevent null
+		winrt_capture::Direct3D11CaptureFrame frame = sender.TryGetNextFrame();														// fetch frame																								
+		encoderEngine->StartFrame(frame, context, backBuffer, m_hWindow);
 
-			winrt_d3d11::IDirect3DSurface surface = frame.Surface();
-
-			auto interopAccess = surface.as<Windows::Graphics::DirectX::Direct3D11::IDirect3DDxgiInterfaceAccess>();				// new windows texture
-			winrt::com_ptr<ID3D11Texture2D> rawTexture;
-
-			interopAccess->GetInterface(																							// transfers interopacess
-				__uuidof(ID3D11Texture2D),																							// interface id
-				rawTexture.put_void()																								// output pointer
-			);
-
-			if (rawTexture && backBuffer) {
-
-				context->CopyResource(backBuffer, rawTexture.get());
-				::PostMessageW(
-					m_hWindow,
-					WM_RENDER_UI_MESSAGE,
-					0,
-					0
-				);
-
-			}
-
-			surface.Close();
-
-		}
-
-		frame.Close();
-
-		});
+	});
 
 	m_captureSession = m_framePool.CreateCaptureSession(m_captureItem);																// creates the session now that its time
 	m_captureSession.IsBorderRequired(false);																						// removes border

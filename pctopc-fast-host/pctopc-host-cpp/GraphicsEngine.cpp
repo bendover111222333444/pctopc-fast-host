@@ -3,12 +3,9 @@
 
 #pragma comment(lib, "d3d11.lib")
 
-GraphicsEngine::~GraphicsEngine() { Destroy(); };
-
-void GraphicsEngine::Init(HWND hWindow, UIManager* uiManager, Resolution startRes, UINT fps, UINT bufferCount) {
+void GraphicsEngine::Init(HWND hWindow, Resolution startRes, UINT fps, UINT bufferCount) {
 
 	m_res = startRes;
-	m_uiManager = uiManager;
 
 	DXGI_SWAP_CHAIN_DESC swapChainDesc = {
 		.BufferDesc {
@@ -46,6 +43,13 @@ void GraphicsEngine::Init(HWND hWindow, UIManager* uiManager, Resolution startRe
 		m_deviceContext.put()							// pointer so the function returns my device and swapchain
 	));
 
+	winrt::com_ptr<ID3D11Multithread> multithread;
+	if (SUCCEEDED(m_deviceContext->QueryInterface(IID_PPV_ARGS(multithread.put())))) {
+
+		multithread->SetMultithreadProtected(TRUE);
+
+	}
+
 	winrt::check_hresult(m_swapChain->GetBuffer(
 		0,											// standard buffer index
 		__uuidof(ID3D11Texture2D),					// get structure of direct 3d texture
@@ -75,21 +79,5 @@ void GraphicsEngine::Init(HWND hWindow, UIManager* uiManager, Resolution startRe
 	));
 
 	m_finalDevice = graphicDevice.as<winrt_d3d11::IDirect3DDevice>();	// turns iinspectable into useable direct3d device
-
-	m_uiManager->InitUI(hWindow, m_device.get(), m_deviceContext.get());
-
-}
-
-void GraphicsEngine::Destroy() {
-
-	m_uiManager->ShutDownUI();
-
-}
-
-void GraphicsEngine::RunUILoopAndPresent() {
-
-	m_uiManager->InitFrameUI();
-	m_uiManager->RenderUI();
-	m_uiManager->CloseFrameUI(m_renderTargetView.get(), m_deviceContext.get(), m_swapChain.get());
 
 }

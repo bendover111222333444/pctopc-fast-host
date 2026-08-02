@@ -1,5 +1,7 @@
 C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\Application.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\Application.obj
 C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\CaptureEngine.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\CaptureEngine.obj
+C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\Debug.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\Debug.obj
+C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\EncoderEngine.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\EncoderEngine.obj
 C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\GraphicsEngine.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\GraphicsEngine.obj
 C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\imgui.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\imgui.obj
 C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\imgui_draw.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\imgui_draw.obj
@@ -8,5 +10,5 @@ C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\im
 C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\imgui_tables.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\imgui_tables.obj
 C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\imgui_widgets.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\imgui_widgets.obj
 C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\Main.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\Main.obj
-C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\UIManager.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\UIManager.obj
+C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\UIService.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\UIService.obj
 C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\WindowManager.cpp;C:\Users\liamf\source\repos\pctopc-fast-host\pctopc-fast-host\pctopc-host-cpp\x64\Release\WindowManager.obj

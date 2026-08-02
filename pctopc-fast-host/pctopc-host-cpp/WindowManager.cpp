@@ -1,4 +1,5 @@
-#include "WindowManager.h" 
+#include "WindowManager.h"
+#include "UIService.h"
 #include "imgui_impl_win32.h" 
 #include "resource.h"
 #include <timeapi.h>
@@ -34,9 +35,8 @@ bool WindowManager::HandleMessage(HWND hwnd, UINT uMsg, LPARAM lParam) {
 			.height = (UINT)HIWORD(lParam),
 		};
 
-		for (auto* listener : m_listeners) {
-			listener->OnResize(res);
-		}
+		UIService::ResizeUI(res);
+
 		return false;
 	}
 	default:
@@ -122,13 +122,20 @@ void WindowManager::Init(const std::wstring& appName, Resolution startRes, int i
 
 void WindowManager::Destroy() {
 
+	timeEndPeriod(1);
+
 	if (m_hWindow) {
 
 		::DestroyWindow(m_hWindow);
+		m_hWindow = nullptr;
 
 	}
+	if (m_hInstance) {
 
-	::UnregisterClassW(m_appName.c_str(), m_hInstance);	// unregisters to windows
+		::UnregisterClassW(m_appName.c_str(), m_hInstance);
+		m_hInstance = nullptr;
+
+	}
 
 }
 
@@ -136,19 +143,18 @@ void WindowManager::Show() {
 
 	::ShowWindow(m_hWindow, SW_SHOW);
 
+	::SetWindowPos(
+		m_hWindow,													// hwnd
+		NULL,														// inserts
+		0, 0, 0, 0,													// pos
+		SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED	// flags
+	);
+
+	::UpdateWindow(m_hWindow);
+
 }
 
-void WindowManager::RegisterListener(IWindowEventListener* listener) {
-
-	if (listener) {
-
-		m_listeners.push_back(listener);
-
-	}
-
-}
-
-void WindowManager::MessageLoopRun(std::function<void(const MSG& msg)>method) {
+void WindowManager::FreezeRunMainThread(std::function<void(const MSG& msg)>method) {
 
 	MSG msg = {};
 

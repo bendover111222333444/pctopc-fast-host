@@ -1,33 +1,49 @@
-#include "Common.h"
-#include "resource.h"
 #include "Application.h"
-#include "CaptureEngine.h"
-#include "GraphicsEngine.h"
-#include "UIManager.h"
-#include "WindowManager.h"
+#include "Debug.h"
+#include <comdef.h>
+#include <stdio.h>
+#include <io.h>
+#include <fcntl.h>
+#include <iostream>
 
 void Application::Init() {
 
 	winrt::init_apartment();
 
-	m_uiManager = std::make_unique<UIManager>();
+	Debug::EnableDebugConsole();
 
 	m_windowManager = std::make_unique<WindowManager>();
-	m_windowManager->Init(m_appName, m_startingSize, m_iconId);
-
-	m_windowManager->RegisterListener(m_uiManager.get());
+	m_windowManager->Init(
+		m_appName, 
+		m_startingSize, 
+		m_iconId
+	);
 
 	m_captureEngine = std::make_unique<CaptureEngine>();
-	m_captureEngine->Init(m_windowManager->GetWindowHandle(), m_monitorDefault, m_appName);
+	m_captureEngine->Init(
+		m_windowManager->GetWindowHandle(), 
+		m_monitorDefault, 
+		m_appName
+	);
 
 	m_graphicsEngine = std::make_unique<GraphicsEngine>();
 	m_graphicsEngine->Init(
 		m_windowManager->GetWindowHandle(),
-		m_uiManager.get(),
 		m_captureEngine->GetResolution(),
 		m_fps,
 		m_bufferCount
 	);
+
+	m_encoderEngine = std::make_unique<EncoderEngine>();
+	m_encoderEngine->Init(
+		m_graphicsEngine->GetDevice(),
+		m_graphicsEngine->GetContext(),
+		m_captureEngine->GetResolution(),
+		m_fps,
+		m_bitrate
+	);
+
+	UIService::InitUI(m_windowManager->GetWindowHandle(), m_graphicsEngine->GetDevice(), m_graphicsEngine->GetContext());
 
 }
 
@@ -37,9 +53,9 @@ void Application::Run() {
 
 	m_captureEngine->Start(
 
+		m_encoderEngine.get(),
 		m_graphicsEngine->GetContext(),
 		m_graphicsEngine->GetBackBuffer(),
-		m_graphicsEngine->GetSwapChain(),
 		m_graphicsEngine->GetWinRTDevice(),
 		m_bufferCount
 
@@ -49,12 +65,15 @@ void Application::Run() {
 
 void Application::Loop() {
 
-	m_windowManager->MessageLoopRun([this](const MSG& msg) {
+	m_windowManager->FreezeRunMainThread([this](const MSG& msg) {
 
 		if (msg.message == WM_RENDER_UI_MESSAGE) 
 		{ 
 
-			m_graphicsEngine->RunUILoopAndPresent(); 
+			UIService::InitFrameUI();
+			UIService::RenderUI();
+			UIService::CloseFrameUI(m_graphicsEngine->GetRenderTarget(), m_graphicsEngine->GetContext());
+			m_encoderEngine->CloseFrame(m_graphicsEngine->GetSwapChain());
 
 		}
 		
@@ -64,11 +83,17 @@ void Application::Loop() {
 
 void Application::Shutdown() {
 
+	m_encoderEngine->Destroy();
+
 	if (m_captureEngine) {
 
 		m_captureEngine->Destroy();
+		UIService::ShutDownUI();
 
 	}
+
+	m_captureEngine->Destroy();
+	m_windowManager->Destroy();
 
 }
 

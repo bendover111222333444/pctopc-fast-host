@@ -5,6 +5,7 @@
 #include <vector>										 // vector
 #include <mutex>										 // multithreading
 #include <functional>									 // functions through parameters
+#include <atomic>									     // adds atomically timed variables
 
 #define WM_RENDER_UI_MESSAGE (WM_USER + 1)				 // thread macro
 
@@ -12,15 +13,5 @@ struct Resolution {
 
 	UINT width = 0;
 	UINT height = 0;
-
-};
-
-class IWindowEventListener {
-
-public:
-
-	virtual ~IWindowEventListener() = default;
-	virtual void OnResize(Resolution res) {};
-
 
 };

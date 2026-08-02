@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "EncoderEngine.h"
 
 #include <d3d11.h>
 #include <dxgi.h>
@@ -36,7 +37,7 @@ public:
 	CaptureEngine& operator=(const CaptureEngine&) = delete;
 
 	void Init(HWND hWindow, UINT monitorDefault, const std::wstring& appName);
-	void Start(ID3D11DeviceContext* context, ID3D11Texture2D* backBuffer, IDXGISwapChain* swapChain, winrt_d3d11::IDirect3DDevice winrtDevice, UINT bufferCount);
+	void Start(EncoderEngine* encoderEngine, ID3D11DeviceContext* context, ID3D11Texture2D* backBuffer, winrt_d3d11::IDirect3DDevice winrtDevice, UINT bufferCount);
 	void Destroy();
 	Resolution GetResolution() const { return m_res; }
 

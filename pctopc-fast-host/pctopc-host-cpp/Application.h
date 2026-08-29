@@ -15,7 +15,7 @@ private:
 	std::wstring m_appName = L"pctopc-fast-host";
 	UINT m_fps = 144;
 	UINT m_bufferCount = 2;
-	UINT m_bitrate = 6'000'000;
+	UINT m_bitrate = 100'000;
 	UINT m_monitorDefault = MONITOR_DEFAULTTOPRIMARY;
 	DWORD m_bufferSize = 1'048'576;
 	int m_iconId = IDI_ICON1;

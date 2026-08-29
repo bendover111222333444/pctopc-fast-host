@@ -72,22 +72,6 @@ void WindowManager::Init(const std::wstring& appName, Resolution startRes, int i
 
 	m_appName = appName;
 	m_hInstance = ::GetModuleHandleW(nullptr);
-
-	timeBeginPeriod(1);
-
-	HANDLE hProcess = GetCurrentProcess();
-
-	PROCESS_POWER_THROTTLING_STATE powerState = {};
-	powerState.Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
-	powerState.ControlMask = PROCESS_POWER_THROTTLING_EXECUTION_SPEED;
-	powerState.StateMask = 0;										   // speeeeeeeeeeeed
-
-	SetProcessInformation(
-		hProcess,
-		ProcessPowerThrottling,
-		&powerState,
-		sizeof(powerState)
-	);
 	
 	WNDCLASSW windowSetup = {
 		.lpfnWndProc = WindowProc,
@@ -116,6 +100,7 @@ void WindowManager::Init(const std::wstring& appName, Resolution startRes, int i
 
 	const DWORD DWMWA_EXCLUDE_FROM_PEEK_VAL = 12;
 	BOOL disablePeek = TRUE;
+	SetWindowDisplayAffinity(m_hWindow, WDA_EXCLUDEFROMCAPTURE);
 	DwmSetWindowAttribute(m_hWindow, DWMWA_EXCLUDE_FROM_PEEK_VAL, &disablePeek, sizeof(disablePeek));
 
 }

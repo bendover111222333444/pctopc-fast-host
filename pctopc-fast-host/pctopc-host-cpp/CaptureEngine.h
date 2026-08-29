@@ -37,6 +37,7 @@ public:
 	CaptureEngine& operator=(const CaptureEngine&) = delete;
 
 	void Init(HWND hWindow, UINT monitorDefault, const std::wstring& appName);
+	void StartKeepWGCBusy();
 	void Start(EncoderEngine* encoderEngine, ID3D11DeviceContext* context, ID3D11Texture2D* backBuffer, winrt_d3d11::IDirect3DDevice winrtDevice, UINT bufferCount);
 	void Destroy();
 	Resolution GetResolution() const { return m_res; }

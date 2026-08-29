@@ -1,14 +1,43 @@
 #include "Application.h"
 #include "Debug.h"
+
+#include <avrt.h>
+#include <d3dkmthk.h>
 #include <comdef.h>
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
 #include <iostream>
 
+#pragma comment(lib, "Avrt.lib")
+
 void Application::Init() {
 
 	winrt::init_apartment();
+	
+	PROCESS_POWER_THROTTLING_STATE state = {};
+	state.Version = PROCESS_POWER_THROTTLING_CURRENT_VERSION;
+	state.ControlMask = PROCESS_POWER_THROTTLING_EXECUTION_SPEED | PROCESS_POWER_THROTTLING_IGNORE_TIMER_RESOLUTION;
+	state.StateMask = 0;
+
+	SetProcessInformation(
+		GetCurrentProcess(), 
+		ProcessPowerThrottling,
+		&state, 
+		sizeof(state)
+	);
+
+	D3DKMTSetProcessSchedulingPriorityClass(
+		GetCurrentProcess(),
+		D3DKMT_SCHEDULINGPRIORITYCLASS_HIGH
+	);
+
+	DWORD dka_taskIndex = 0;
+	HANDLE dka_mmcssHandle = AvSetMmThreadCharacteristicsW(L"Capture", &dka_taskIndex);
+
+	SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+	timeBeginPeriod(1);
+	timeEndPeriod(1);
 
 	Debug::EnableDebugConsole();
 
